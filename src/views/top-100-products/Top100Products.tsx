@@ -14,7 +14,7 @@ const Top100Products: React.FC = () => {
         setTop100DataResponse(data);
       })
       .catch((error) => {
-        setTop100DataResponse(error);
+        console.log(error);
       });
   }, []);
   return <Table top100DataResponse={top100DataResponse} />;

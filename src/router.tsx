@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import Table from "./components/table/Table";
 import Top100Products from "./views/top-100-products/Top100Products";
 import Start from "./views/start/Start";
+import RecentNotableObservationsInRegion from "./views/recent-notable-observations-in-region/RecentNotableObservationsInRegion";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: "/top-100-table",
         element: <Top100Products />,
+      },
+      {
+        path: "/notable-observations",
+        element: <RecentNotableObservationsInRegion />,
       },
     ],
   },
