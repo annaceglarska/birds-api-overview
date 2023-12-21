@@ -2,33 +2,31 @@ import React, { useEffect, useState, useMemo } from "react";
 import BarChart from "../../components/bar-chart/BarChart";
 import RadarChart from "../../components/radar-chart/RadarChart";
 import StatisticTable from "../../components/statisctic-table/StatisticTable";
-import { apiService } from "../../services/api/api.service";
-import { RecentNotableObservationsInRegionDTO } from "../../services/api/api.types";
 import { DataForChart } from "../../components/radar-chart/RadarChart.types";
 import { ChartData } from "chart.js";
 import { StyledRow } from "../../styled/row/row.styled";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectRecentNotableObservationsInRegion } from "../../slices/bird/bird.slice";
+import { getRecentNotableObservationInRegionAsync } from "../../slices/bird/bird.api-actions";
+import { selectRegion } from "../../slices/config/config.slice";
 
 const RecentNotableObservationsInRegion: React.FC = () => {
-  const [recentObservation, setRecentObservations] =
-    useState<RecentNotableObservationsInRegionDTO | null>(null);
+  const dispatch = useAppDispatch();
+  const recentObservations = useAppSelector(
+    selectRecentNotableObservationsInRegion
+  );
+  const region = useAppSelector(selectRegion);
 
   useEffect(() => {
-    apiService
-      .fetchRecentNotableObservationsInRegion()
-      .then((data) => {
-        setRecentObservations(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    dispatch(getRecentNotableObservationInRegionAsync(region));
+  }, [region]);
 
   const chartData = useMemo<DataForChart>(() => {
     const getInitialCollector = (): DataForChart => ({
       labels: [],
       data: [],
     });
-    const dataChart = recentObservation?.reduce<DataForChart>(
+    const dataChart = recentObservations?.reduce<DataForChart>(
       (accumulator, observation) => {
         const comNameIndex: number = accumulator.labels.findIndex(
           (label) => label === observation.comName
@@ -46,7 +44,7 @@ const RecentNotableObservationsInRegion: React.FC = () => {
       getInitialCollector()
     );
     return dataChart || getInitialCollector();
-  }, [recentObservation]);
+  }, [recentObservations]);
 
   const radarFinalData = useMemo<ChartData<"radar", number[], string>>(() => {
     return {

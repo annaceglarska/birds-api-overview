@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { Top100ProductDTO } from "../../services/api/api.types";
-import { apiService } from "../../services/api/api.service";
+import React, { useEffect } from "react";
 import Table from "../../components/table/Table";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectTop100BirdProduct } from "../../slices/bird/bird.slice";
+import { getTop100ProductAsync } from "../../slices/bird/bird.api-actions";
+import { selectDate, selectRegion } from "../../slices/config/config.slice";
 
 const Top100Products: React.FC = () => {
-  const [top100DataResponse, setTop100DataResponse] =
-    useState<Top100ProductDTO>([]);
+  const dispatch = useAppDispatch();
+  const top100Product = useAppSelector(selectTop100BirdProduct);
+  const date = useAppSelector(selectDate);
+  const region = useAppSelector(selectRegion);
 
   useEffect(() => {
-    apiService
-      .fetchTop100Product({ year: "2000", month: "05", day: "21" })
-      .then((data) => {
-        setTop100DataResponse(data);
+    const dateValue = date ? new Date(date) : new Date();
+    dispatch(
+      getTop100ProductAsync({
+        dateConfig: {
+          year: dateValue.getFullYear().toString() || "",
+          month: dateValue.getMonth().toString() || "",
+          day: dateValue.getDate().toString() || "",
+        },
+        regionCode: region,
       })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-  return <Table top100DataResponse={top100DataResponse} />;
+    );
+  }, [date, region]);
+  return <Table top100DataResponse={top100Product} />;
 };
 
 export default Top100Products;
