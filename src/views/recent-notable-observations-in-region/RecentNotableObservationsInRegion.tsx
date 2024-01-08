@@ -1,16 +1,22 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BarChart from "../../components/bar-chart/BarChart";
 import RadarChart from "../../components/radar-chart/RadarChart";
 import StatisticTable from "../../components/statisctic-table/StatisticTable";
 import { DataForChart } from "../../components/radar-chart/RadarChart.types";
 import { ChartData } from "chart.js";
-import { StyledRow } from "../../styled/row/row.styled";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectRecentNotableObservationsInRegion } from "../../slices/bird/bird.slice";
 import { getRecentNotableObservationInRegionAsync } from "../../slices/bird/bird.api-actions";
 import { selectRegion } from "../../slices/config/config.slice";
+import { ConfigBar } from "../../components/config-bar/ConfigBar";
+import classes from "./RecentNotableObservationsInRegion.module.css";
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
+import IconButton from "@mui/material/IconButton";
+
+export type SelectedChartType = "bar" | "radar";
 
 const RecentNotableObservationsInRegion: React.FC = () => {
+  const [selectedChart, setSelectedChart] = useState<SelectedChartType>("bar");
   const dispatch = useAppDispatch();
   const recentObservations = useAppSelector(
     selectRecentNotableObservationsInRegion
@@ -76,13 +82,41 @@ const RecentNotableObservationsInRegion: React.FC = () => {
     };
   }, [chartData]);
 
+  const changeChart = () => {
+    setSelectedChart(selectedChart === "bar" ? "radar" : "bar");
+  };
+
   return (
     <>
-      <StyledRow>
-        <BarChart data={barFinalData} />
-        <RadarChart data={radarFinalData} />
-      </StyledRow>
-      <StatisticTable />
+      <div>
+        <header>
+          <ConfigBar />
+        </header>
+        <h1>Notable observations</h1>
+      </div>
+      <div className={classes.mainContent}>
+        <nav></nav>
+        <article>
+          <div></div>
+          <div>
+            <IconButton
+              onClick={changeChart}
+              sx={{
+                float: "right",
+              }}
+            >
+              <ChangeCircleIcon />
+            </IconButton>
+            {selectedChart === "bar" ? (
+              <BarChart data={barFinalData} />
+            ) : (
+              <RadarChart data={radarFinalData} />
+            )}
+          </div>
+          <StatisticTable />
+        </article>
+        <aside></aside>
+      </div>
     </>
   );
 };

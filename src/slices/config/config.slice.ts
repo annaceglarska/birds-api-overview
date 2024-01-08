@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { RootState } from "../../app/store";
 
 export interface ConfigState {

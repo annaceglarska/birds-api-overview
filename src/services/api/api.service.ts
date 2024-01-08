@@ -5,7 +5,6 @@ import {
   RecentNotableObservationsInRegionDTO,
 } from "./api.types";
 
-// ToDo: change fetch to axios
 // ToDo: authorization
 
 const apiServiceDefinition = () => {

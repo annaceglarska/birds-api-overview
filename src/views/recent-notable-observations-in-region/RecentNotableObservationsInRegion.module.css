@@ -1,0 +1,16 @@
+.mainContent {
+    display: flex;
+
+    & > nav {
+        width: 15%
+    }
+
+    & > article {
+        width: 60%
+    }
+
+    & > aside {
+        width: 25%
+    }
+}
+

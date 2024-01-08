@@ -8,7 +8,6 @@ import {
   TableBody,
 } from "@mui/material";
 import * as React from "react";
-import { mockData } from "../../mock/mock";
 import { Top100ProductDTO } from "../../services/api/api.types";
 import Row from "../row/Row";
 

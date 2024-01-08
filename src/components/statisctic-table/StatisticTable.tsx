@@ -1,4 +1,3 @@
-import React from "react";
 import { DataGrid } from "@mui/x-data-grid/DataGrid";
 import { Paper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
