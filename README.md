@@ -17,7 +17,9 @@ The application requires defined environment variables to function properly.
 
 - React
 - TypeScript
+- Redux
 - Mui
+- ChartJS
 
 ## Contributing
 
